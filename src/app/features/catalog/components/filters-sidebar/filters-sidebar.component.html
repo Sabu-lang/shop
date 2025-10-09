@@ -1,0 +1,32 @@
+<div class="filters-sidebar">
+  <h3>📊 ფილტრები</h3>
+
+  <label>ძებნა:</label>
+  <input [(ngModel)]="q" placeholder="სახელწოდება..." />
+
+  <label>კატეგორია:</label>
+  <select [(ngModel)]="category">
+    <option value="">ყველა</option>
+    <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+  </select>
+
+  <label>ბრენდი:</label>
+  <select [(ngModel)]="brand">
+    <option value="">ყველა</option>
+    <option *ngFor="let b of brands" [value]="b">{{ b }}</option>
+  </select>
+
+  <label>ფასი (min):</label>
+  <input type="number" [(ngModel)]="minPrice" />
+
+  <label>ფასი (max):</label>
+  <input type="number" [(ngModel)]="maxPrice" />
+
+  <label>რეიტინგი (min):</label>
+  <input type="number" step="0.1" min="0" max="5" [(ngModel)]="minRating" />
+
+  <div class="buttons">
+    <button (click)="apply()">გაფილტრე</button>
+    <button (click)="reset()">გასუფთავება</button>
+  </div>
+</div>

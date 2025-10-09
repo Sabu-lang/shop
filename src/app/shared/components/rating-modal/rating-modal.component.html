@@ -1,0 +1,24 @@
+<div class="rating-modal">
+  <h3>⭐ პროდუქტის შეფასება</h3>
+
+  <form (submit)="submit(); $event.preventDefault()">
+    <label>სახელი:</label>
+    <input [(ngModel)]="fullName" name="name" placeholder="შეიყვანე შენი სახელი" required />
+
+    <label>შეფასება (1–5):</label>
+    <input
+      type="number"
+      [(ngModel)]="rating"
+      name="rating"
+      min="1"
+      max="5"
+      placeholder="მაგ. 5"
+      required
+    />
+
+    <label>კომენტარი:</label>
+    <textarea [(ngModel)]="comment" name="comment" placeholder="დაწერე მოკლე აზრი..."></textarea>
+
+    <button type="submit">გაგზავნა</button>
+  </form>
+</div>

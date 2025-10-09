@@ -1,0 +1,27 @@
+<div class="login-container">
+  <h2>შესვლა</h2>
+
+  <form (ngSubmit)="submit()">
+    <input
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      placeholder="ელ. ფოსტა"
+      required
+    />
+    <input
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      placeholder="პაროლი"
+      required
+    />
+    <button type="submit" [disabled]="loading">შესვლა</button>
+
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+  </form>
+
+  <p class="switch">
+    არ გაქვს ანგარიში? <a routerLink="/register">რეგისტრაცია</a>
+  </p>
+</div>

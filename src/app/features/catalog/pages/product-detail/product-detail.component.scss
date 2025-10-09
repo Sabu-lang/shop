@@ -1,0 +1,7 @@
+.detail { display:grid; grid-template-columns: 480px 1fr; gap: 24px; }
+.detail img { width:100%; border-radius: 12px; object-fit: cover; background:#fafafa; }
+.info .meta { display:grid; gap:6px; margin-top: 8px; color:#374151; }
+.actions { display:flex; gap:12px; margin: 12px 0; }
+.tabs { display:flex; gap:8px; margin: 8px 0; }
+.tabs button.active { background:#111827; color:#fff; }
+button { padding:10px 12px; border-radius:10px; border:1px solid #e5e7eb; background:#fff; cursor:pointer; }

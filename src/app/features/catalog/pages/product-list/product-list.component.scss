@@ -1,0 +1,96 @@
+// მთლიანი wrapper — ცენტრში განლაგება
+.products-wrapper {
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 1300px;
+  }
+}
+
+// pagination დიზაინი — თანამედროვე, ცენტრში
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin: 40px 0 20px 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+
+  button {
+    background: linear-gradient(135deg, #007bff, #00c3ff);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 123, 255, 0.35);
+      background: linear-gradient(135deg, #0062cc, #00aaff);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+  }
+
+  span {
+    background: #f9f9f9;
+    border-radius: 6px;
+    padding: 8px 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    color: #222;
+  }
+}
+
+// მცირე რეაგირება პატარა ეკრანებზე
+@media (max-width: 768px) {
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+
+    button {
+      width: 100%;
+      max-width: 200px;
+    }
+
+    span {
+      font-size: 0.95rem;
+    }
+  }
+
+  .products-wrapper .products {
+    gap: 15px;
+  }
+}
+
+.products-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+
+  .products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+    width: 100%;
+    max-width: 1300px;
+    align-items: stretch; // ბარათები თანაბარი სიმაღლით
+  }
+}

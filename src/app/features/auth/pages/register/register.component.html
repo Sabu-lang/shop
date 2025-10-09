@@ -1,0 +1,57 @@
+<div class="register-container">
+  <div class="register-card">
+    <h2>📝 რეგისტრაცია</h2>
+
+    <form (ngSubmit)="submit()" class="form-content">
+      <div class="input-group">
+        <input type="text" [(ngModel)]="form.firstName" name="firstName" placeholder="სახელი" required />
+      </div>
+
+      <div class="input-group">
+        <input type="text" [(ngModel)]="form.lastName" name="lastName" placeholder="გვარი" required />
+      </div>
+
+      <div class="input-group">
+        <input type="number" [(ngModel)]="form.age" name="age" placeholder="ასაკი" min="18" required />
+      </div>
+
+      <div class="input-group">
+        <input type="email" [(ngModel)]="form.email" name="email" placeholder="ელ.ფოსტა" required />
+      </div>
+
+      <div class="input-group">
+        <input type="password" [(ngModel)]="form.password" name="password" placeholder="პაროლი" required />
+      </div>
+
+      <div class="input-group">
+        <input type="text" [(ngModel)]="form.address" name="address" placeholder="მისამართი" />
+      </div>
+
+      <div class="input-group">
+        <input type="text" [(ngModel)]="form.phone" name="phone" placeholder="ტელეფონი (+995...)" required />
+      </div>
+
+      <div class="input-group">
+        <input type="text" [(ngModel)]="form.zipcode" name="zipcode" placeholder="საფოსტო კოდი" />
+      </div>
+
+      <div class="input-group">
+        <input type="text" [(ngModel)]="form.avatar" name="avatar" placeholder="Avatar URL (სურათის მისამართი)" />
+      </div>
+
+      <div class="input-group">
+        <select [(ngModel)]="form.gender" name="gender">
+          <option value="MALE">მამაკაცი</option>
+          <option value="FEMALE">ქალი</option>
+        </select>
+      </div>
+
+      <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+      <div *ngIf="successMsg" class="success">{{ successMsg }}</div>
+
+      <button type="submit" [disabled]="loading" class="btn-primary">
+        {{ loading ? '⏳ რეგისტრაცია მიმდინარეობს...' : 'რეგისტრაცია' }}
+      </button>
+    </form>
+  </div>
+</div>

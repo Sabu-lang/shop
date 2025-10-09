@@ -1,0 +1,39 @@
+<header class="header">
+  <!-- ლოგო -->
+  <div class="logo" (click)="goHome()">
+    <!-- <img src="assets/images/logo.png" alt="logo" /> -->
+    <span>🛍️MyShop</span>
+  </div>
+
+  <!-- ძებნა -->
+  <div class="search">
+    <input
+      type="text"
+      placeholder="ძებნა..."
+      [(ngModel)]="q"
+      (keyup.enter)="onSearch()"
+    />
+    <button (click)="onSearch()">ძებნა</button>
+  </div>
+
+  <!-- მოქმედებები -->
+  <div class="actions">
+    <button class="reset-btn" (click)="resetFilters()">გაფილტვრის გასუფთავება</button>
+
+    <!-- ავტორიზებული -->
+    <ng-container *ngIf="user; else guest">
+      <button class="cart-btn" (click)="goCart()">🛒 კალათა</button>
+
+      <div class="profile">
+        <button class="profile-btn" (click)="goAccount()">👤 {{ user?.name || 'ანგარიში' }}</button>
+        <button class="logout-btn" (click)="logout()">🚪 გამოსვლა</button>
+      </div>
+    </ng-container>
+
+    <!-- სტუმარი -->
+    <ng-template #guest>
+      <button class="login-btn" (click)="goLogin()">🔑 შესვლა</button>
+      <button class="register-btn" (click)="goRegister()">📝 რეგისტრაცია</button>
+    </ng-template>
+  </div>
+</header>

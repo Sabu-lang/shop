@@ -1,0 +1,40 @@
+<div class="product-card">
+  <div class="image-container">
+    <img
+      [src]="product.images?.[currentImageIndex] || product.thumbnail"
+      [alt]="product.title"
+      class="product-image"
+    />
+    <button class="nav-btn left" (click)="prevImage()">‹</button>
+    <button class="nav-btn right" (click)="nextImage()">›</button>
+  </div>
+
+  <div class="product-info">
+    <h3>{{ product.title }}</h3>
+    <p>{{ product.brand }}</p>
+
+    <div class="price">
+      <span class="current">${{ getPriceValue(product.price, 'current') }}</span>
+    </div>
+
+    <p class="desc">{{ product.description | slice: 0:90 }}...</p>
+
+    <!-- თუ არის მარაგი -->
+    <div *ngIf="!isOutOfStock; else outStock">
+      <div class="qty-control">
+        <button (click)="dec()">−</button>
+        <span>{{ quantity }}</span>
+        <button (click)="inc()">+</button>
+      </div>
+
+      <button class="cart-btn" (click)="onAddToCart()">
+        კალათაში დამატება
+      </button>
+    </div>
+
+    <!-- თუ არაა მარაგში -->
+    <ng-template #outStock>
+      <div class="out-stock">მარაგში აღარ არის ❌</div>
+    </ng-template>
+  </div>
+</div>

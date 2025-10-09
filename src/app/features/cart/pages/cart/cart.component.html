@@ -1,0 +1,31 @@
+<div class="cart-container" *ngIf="!loading; else loadingTpl">
+  <h2>🛒 შენი კალათა</h2>
+
+  <div *ngIf="items.length === 0" class="empty">
+    კალათა ცარიელია 😢
+  </div>
+
+  <div *ngFor="let item of items" class="cart-item">
+    <div class="info">
+      <h3>{{ item.title }}</h3>
+      <p>ფასი: {{ item.price }} ₾</p>
+      <p>რაოდენობა: {{ item.quantity }}</p>
+      <p>ჯამი: {{ item.subtotal }} ₾</p>
+    </div>
+
+    <div class="actions">
+      <button (click)="decrease(item)">➖</button>
+      <button (click)="increase(item)">➕</button>
+      <button (click)="remove(item)">🗑 წაშლა</button>
+    </div>
+  </div>
+
+  <div class="summary" *ngIf="items.length > 0">
+    <h3>სულ თანხა: {{ totalPrice }} ₾</h3>
+    <p>სულ რაოდენობა: {{ totalQuantity }}</p>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <p>იტვირთება...</p>
+</ng-template>

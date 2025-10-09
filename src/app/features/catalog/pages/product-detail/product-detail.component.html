@@ -1,0 +1,38 @@
+<div class="product-detail" *ngIf="p">
+  <div class="detail-container">
+    <div class="images">
+      <img
+        [src]="p.images?.[currentImageIndex] || p.thumbnail"
+        [alt]="p.title"
+        class="main-image"
+      />
+
+      <div class="thumbs">
+        <img
+          *ngFor="let img of p.images; let i = index"
+          [src]="img"
+          (click)="currentImageIndex = i"
+          [class.active]="i === currentImageIndex"
+        />
+      </div>
+    </div>
+
+    <div class="info">
+      <h2>{{ p.title }}</h2>
+      <p>{{ p.brand }}</p>
+
+      <div class="price">
+        <strong>${{ getPriceValue(p.price, 'current') }}</strong>
+        <span *ngIf="getPriceValue(p.price, 'beforeDiscount')" class="old">
+          ${{ getPriceValue(p.price, 'beforeDiscount') }}
+        </span>
+      </div>
+
+      <p class="description">{{ p.description }}</p>
+
+      <button class="buy-btn" (click)="addToCart()">
+        კალათაში დამატება
+      </button>
+    </div>
+  </div>
+</div>
