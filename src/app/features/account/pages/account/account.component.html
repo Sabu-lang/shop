@@ -1,22 +1,48 @@
-<div class="account-container" *ngIf="user">
-  <div class="card">
-    <h2>👋 გამარჯობა, {{ user.firstName || 'მომხმარებელო' }}!</h2>
+<div class="account-card">
+  <h2>👋 გამარჯობა, {{ user?.name }}!</h2>
 
-    <div class="profile-image">
-      <img [src]="user.avatar || 'assets/images/default-avatar.png'" alt="user" />
-    </div>
+  <div class="avatar-container">
+    <img src="assets/images/user.png" alt="user" />
+  </div>
 
-    <div class="info">
-      <p><strong>სახელი:</strong> {{ user.firstName || '—' }}</p>
-      <p><strong>გვარი:</strong> {{ user.lastName || '—' }}</p>
-      <p><strong>ელ.ფოსტა:</strong> {{ user.email || '—' }}</p>
-      <p><strong>ტელეფონი:</strong> {{ user.phone || '—' }}</p>
-      <p><strong>მისამართი:</strong> {{ user.address || '—' }}</p>
-    </div>
+  <ul class="info-list">
+    <li><strong>სახელი:</strong> {{ user?.name }}</li>
+    <li><strong>ელ.ფოსტა:</strong> {{ user?.email }}</li>
+    <li><strong>ტელეფონი:</strong> {{ user?.phone }}</li>
+  </ul>
 
-    <div class="actions">
-      <button (click)="goHome()">მთავარზე</button>
-      <button class="logout-btn" (click)="logout()">გამოსვლა</button>
+  <div class="actions">
+    <button class="home-btn" (click)="goHome()">მთავარზე</button>
+    <button class="logout-btn" (click)="logout()">გამოსვლა</button>
+  </div>
+
+  <!-- 🔐 პაროლის შეცვლა -->
+  <div class="change-password">
+    <h3>პაროლის შეცვლა</h3>
+
+    <input
+      type="password"
+      [(ngModel)]="oldPassword"
+      placeholder="ძველი პაროლი"
+      required
+    />
+    <input
+      type="password"
+      [(ngModel)]="newPassword"
+      placeholder="ახალი პაროლი"
+      required
+    />
+
+    <button (click)="changePassword()">შეცვლა</button>
+
+    <p *ngIf="message" class="message">{{ message }}</p>
+    <p *ngIf="error" class="error">{{ error }}</p>
+  </div>
+
+  <div class="theme-toggle" (click)="toggleTheme()">
+    <div class="switch" [class.dark]="theme === 'dark'">
+      <div class="circle"></div>
     </div>
+    <span>{{ theme === 'dark' ? '🌙 ბნელი რეჟიმი' : '☀ ნათელი რეჟიმი' }}</span>
   </div>
 </div>

@@ -1,24 +1,27 @@
+/* 🌤️ ღია რეჟიმი */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background-color: #faf9ff;
+  background-color: var(--bg);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .register-card {
-  background: #fff;
+  background: var(--card);
   border-radius: 20px;
   padding: 35px 40px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   width: 440px;
   text-align: center;
   transition: all 0.3s ease;
+  color: var(--text);
 
   h2 {
     margin-bottom: 25px;
     font-size: 1.6rem;
-    color: #1a1a1a;
+    color: var(--text);
     font-weight: 600;
     letter-spacing: 0.5px;
   }
@@ -36,13 +39,15 @@
       width: 100%;
       padding: 12px;
       border-radius: 10px;
-      border: 1px solid #ddd;
+      border: 1px solid var(--card-border);
       font-size: 15px;
       outline: none;
-      transition: all 0.2s ease;
+      background: var(--bg);
+      color: var(--text);
+      transition: all 0.3s ease;
 
       &:focus {
-        border-color: #007bff;
+        border-color: var(--primary);
         box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
       }
     }
@@ -63,23 +68,61 @@
   .btn-primary {
     margin-top: 10px;
     width: 100%;
-    background: #007bff;
-    color: #fff;
+    background: var(--primary);
+    color: var(--button-text);
     border: none;
     border-radius: 10px;
     padding: 12px;
     cursor: pointer;
     font-size: 15px;
     font-weight: 500;
-    transition: 0.2s;
+    transition: 0.25s ease;
 
     &:hover {
-      background: #005ecb;
+      background: var(--primary-dark);
     }
 
     &:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+    }
+  }
+}
+
+/* 🌙 DARK THEME */
+body.dark-theme {
+  .register-container {
+    background-color: #181818;
+  }
+
+  .register-card {
+    background: #1f1f1f;
+    color: #eaeaea;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+
+    h2 {
+      color: #fff;
+    }
+
+    input,
+    select {
+      background: #2a2a2a;
+      border-color: #333;
+      color: #fff;
+
+      &:focus {
+        border-color: #4da3ff;
+        box-shadow: 0 0 4px rgba(77, 163, 255, 0.3);
+      }
+    }
+
+    .btn-primary {
+      background: #4da3ff;
+      color: #fff;
+
+      &:hover {
+        background: #1a80ff;
+      }
     }
   }
 }

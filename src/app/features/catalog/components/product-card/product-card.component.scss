@@ -17,7 +17,6 @@
     box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
   }
 
-  /* ---------------- IMAGE ---------------- */
   .image-container {
     position: relative;
     width: 100%;
@@ -39,7 +38,6 @@
       transform: scale(1.05);
     }
 
-    /* შენს კარუსელზე არაფერი არ იცვლება */
     .nav-btn {
       position: absolute;
       top: 50%;
@@ -70,7 +68,7 @@
     }
   }
 
-  /* ---------------- INFO ---------------- */
+
   .product-info {
     padding: 14px 14px 18px;
     flex-grow: 1;
@@ -84,7 +82,7 @@
       color: #222;
       margin: 8px 0 4px;
       line-height: 1.4em;
-      min-height: 42px; /* სათაურის სიმაღლე თანაბარი */
+      min-height: 42px; 
     }
 
     p {
@@ -122,7 +120,7 @@
       }
     }
 
-    /* ---------------- CART BUTTON ---------------- */
+
     .cart-btn {
       background: linear-gradient(135deg, #007bff, #00bcd4);
       color: white;

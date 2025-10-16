@@ -19,7 +19,7 @@
 
     <p class="desc">{{ product.description | slice: 0:90 }}...</p>
 
-    <!-- თუ არის მარაგი -->
+
     <div *ngIf="!isOutOfStock; else outStock">
       <div class="qty-control">
         <button (click)="dec()">−</button>
@@ -32,7 +32,6 @@
       </button>
     </div>
 
-    <!-- თუ არაა მარაგში -->
     <ng-template #outStock>
       <div class="out-stock">მარაგში აღარ არის ❌</div>
     </ng-template>

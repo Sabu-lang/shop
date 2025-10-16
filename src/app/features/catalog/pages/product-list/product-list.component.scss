@@ -1,96 +1,159 @@
-// მთლიანი wrapper — ცენტრში განლაგება
 .products-wrapper {
-  width: 100%;
-  padding: 40px 20px;
   display: flex;
   justify-content: center;
-
-  .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    width: 100%;
-    max-width: 1300px;
-  }
+  align-items: flex-start;
+  background: var(--bg);
+  padding: 20px 20px 60px;
+  min-height: 100vh;
 }
 
-// pagination დიზაინი — თანამედროვე, ცენტრში
-.pagination {
+.products {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 24px;
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+
+.pagination.top-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
-  margin: 40px 0 20px 0;
-  font-size: 1.1rem;
+  gap: 14px;
+  padding: 16px 0;
+  background: var(--bg);
+  border-bottom: 2px solid var(--card-border);
+  position: sticky;
+  z-index: 50;
+}
+
+
+.pagination button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
   font-weight: 500;
-  color: #333;
-
-  button {
-    background: linear-gradient(135deg, #007bff, #00c3ff);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
-
-    &:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(0, 123, 255, 0.35);
-      background: linear-gradient(135deg, #0062cc, #00aaff);
-    }
-
-    &:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      box-shadow: none;
-    }
-  }
-
-  span {
-    background: #f9f9f9;
-    border-radius: 6px;
-    padding: 8px 18px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    color: #222;
-  }
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-// მცირე რეაგირება პატარა ეკრანებზე
-@media (max-width: 768px) {
-  .pagination {
-    flex-direction: column;
-    gap: 10px;
-
-    button {
-      width: 100%;
-      max-width: 200px;
-    }
-
-    span {
-      font-size: 0.95rem;
-    }
-  }
-
-  .products-wrapper .products {
-    gap: 15px;
-  }
+.pagination button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
 }
 
-.products-wrapper {
+.pagination button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 600;
+  color: var(--text);
+}
+
+
+body.dark-theme .pagination.top-pagination {
+  background: #1a1a1a;
+  border-bottom: 2px solid #2a2a2a;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px; 
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px 10px 100px 10px; 
+  background: var(--bg);
+  transition: all 0.3s ease;
+}
+
+.pagination {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--bg);
   display: flex;
   justify-content: center;
-  padding: 40px 20px;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-top: 2px solid var(--card-border);
+  z-index: 1000;
+  transition: background 0.3s ease, border 0.3s ease;
+}
 
+.pagination button {
+  background: var(--primary);
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.pagination button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+
+body.dark-theme .pagination {
+  background: #181818;
+  border-top: 2px solid #333;
+}
+
+@media (max-width: 1400px) {
   .products {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
-    width: 100%;
-    max-width: 1300px;
-    align-items: stretch; // ბარათები თანაბარი სიმაღლით
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (max-width: 1000px) {
+  .products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .products {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 1600px) {
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .products {
+    grid-template-columns: 1fr;
   }
 }

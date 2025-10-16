@@ -1,3 +1,11 @@
+
+<div class="pagination top-pagination" *ngIf="total > pageSize">
+  <button (click)="prevPage()" [disabled]="page <= 1">⬅ წინა</button>
+  <span>გვერდი {{ page }} / {{ totalPages }}</span>
+  <button (click)="nextPage()" [disabled]="page * pageSize >= total">შემდეგი ➡</button>
+</div>
+
+
 <div class="products-wrapper">
   <div class="products">
     <app-product-card
@@ -6,11 +14,4 @@
       (addToCart)="addToCart(p)"
     ></app-product-card>
   </div>
-</div>
-
-<!-- Pagination -->
-<div class="pagination" *ngIf="total > pageSize">
-  <button (click)="prevPage()" [disabled]="page <= 1">⬅ წინა</button>
-  <span>გვერდი {{ page }} / {{ totalPages }}</span>
-  <button (click)="nextPage()" [disabled]="page * pageSize >= total">შემდეგი ➡</button>
 </div>

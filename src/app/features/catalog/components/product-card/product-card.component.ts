@@ -14,7 +14,7 @@ export class ProductCardComponent {
   @Output() addToCart = new EventEmitter<{ product: Product; quantity: number }>();
 
   currentImageIndex = 0;
-  quantity = 1; // default რაოდენობა
+  quantity = 1; 
 
   nextImage() {
     if (!this.product.images || this.product.images.length <= 1) return;
@@ -45,7 +45,6 @@ export class ProductCardComponent {
     }
   }
 
-  /** ✅ ფასი მუშაობს როგორც number ისე object */
   getPriceValue(price: any, key: string): number | undefined {
     if (price == null) return undefined;
     if (typeof price === 'number') {

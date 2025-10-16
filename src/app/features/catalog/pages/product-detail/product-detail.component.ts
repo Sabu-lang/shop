@@ -20,7 +20,7 @@ export class ProductDetailComponent {
   p?: Product;
   loading = false;
 
-  // 👉 გამოსახულებების ნავიგაციისთვის
+
   currentImageIndex = 0;
 
   ngOnInit() {
@@ -37,7 +37,6 @@ export class ProductDetailComponent {
     }
   }
 
-  // 👉 ფასის დამხმარე მეთოდი
   getPriceValue(price: any, type: 'current' | 'beforeDiscount'): number {
     if (!price) return 0;
     if (typeof price === 'number') return price;
@@ -47,11 +46,9 @@ export class ProductDetailComponent {
     return 0;
   }
 
-  // 👉 კალათაში დამატება
   addToCart() {
     if (!this.p) return;
 
-    // ზოგი მოდელში შეიძლება იყოს productId ან _id
     const id = (this.p as any).id || (this.p as any).productId || (this.p as any)._id;
     if (!id) {
       console.error('❌ პროდუქტის ID ვერ მოიძებნა');

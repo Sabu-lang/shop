@@ -1,0 +1,34 @@
+<div class="payment-container">
+  <h2>💳 გადახდა</h2>
+
+  <form [formGroup]="paymentForm" (ngSubmit)="onPay()">
+    <label>ბარათის ნომერი</label>
+    <input formControlName="cardNumber" placeholder="XXXX XXXX XXXX XXXX" />
+
+    <label>მფლობელის სახელი</label>
+    <input formControlName="name" placeholder="მაგ: John Doe" />
+
+    <div class="row">
+      <div>
+        <label>ვადა</label>
+        <input formControlName="expiry" placeholder="MM/YY" />
+      </div>
+      <div>
+        <label>CVV</label>
+        <input formControlName="cvv" placeholder="123" />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="loading">
+      {{ loading ? 'იტარდება გადახდა...' : 'გადახდა ($)' }}
+    </button>
+  </form>
+
+  <p *ngIf="success" class="success">
+    ✅ გადახდა წარმატებით შესრულდა! კალათა გასუფთავდა — გიბრუნებთ მთავარ გვერდზე...
+  </p>
+
+  <p *ngIf="error" class="error">
+    ❌ გადახდა ვერ შესრულდა — სცადეთ თავიდან.
+  </p>
+</div>

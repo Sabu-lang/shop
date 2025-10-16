@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ApiService } from './api.service';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { tap, map, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 export interface LoginRequest {
   email: string;
@@ -16,79 +17,93 @@ export interface RegisterPayload {
   address: string;
   phone: string;
   zipcode: string;
-  avatar: string;
+  avatar?: string;
   gender: 'MALE' | 'FEMALE';
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private api = inject(ApiService);
+  private http = inject(HttpClient);
+  private readonly API = 'https://api.everrest.educata.dev/auth'; 
 
   private userSubject = new BehaviorSubject<any>(this.getUser());
   user$ = this.userSubject.asObservable();
 
-  /** 🔹 შესვლა (login) */
   login(email: string, password: string): Observable<any> {
-    return new Observable((observer) => {
-      this.api.post('/auth/sign_in', { email, password }).subscribe({
-        next: (res: any) => {
-          console.log('🟢 Login response:', res);
-
-          // ✅ შენახვა სწორ ფორმატში (Access Token პირდაპირ ტექსტად)
-          if (res?.access_token) {
-            localStorage.setItem('token', res.access_token);
-          }
-
-          // ✅ მომხმარებლის შენახვა access_token-ით
-          if (res?.user) {
-            const fullUser = { ...res.user, access_token: res.access_token };
-            localStorage.setItem('user', JSON.stringify(fullUser));
-            this.userSubject.next(fullUser);
-          }
-
-          observer.next(res);
-          observer.complete();
-        },
-        error: (err) => {
-          console.error('❌ Login error:', err);
-          observer.error(err);
-        },
-      });
-    });
+    return this.http.post(`${this.API}/sign_in`, { email, password }).pipe(
+      tap((res: any) => {
+        if (res?.access_token) {
+          localStorage.setItem('user', JSON.stringify(res));
+          localStorage.setItem('token', res.access_token);
+          this.userSubject.next(res);
+          console.log('✅ Login წარმატებით დასრულდა:', res);
+        }
+      }),
+      catchError(err => {
+        console.error('❌ Login შეცდომა:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  /** 🔹 რეგისტრაცია */
   register(data: RegisterPayload): Observable<any> {
+
     if (!data.phone.startsWith('+995')) {
       data.phone = `+995${data.phone.replace('+', '').trim()}`;
     }
-
     if (!data.avatar || data.avatar.trim() === '') {
       data.avatar = 'https://i.imgur.com/BohQiHi.jpg';
     }
 
-    return this.api.post('/auth/sign_up', data);
+    return this.http.post(`${this.API}/sign_up`, data).pipe( 
+      tap(res => console.log('✅ რეგისტრაცია წარმატებულია:', res)),
+      catchError(err => {
+        console.error('❌ რეგისტრაციის შეცდომა:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  /** 🔹 გამოსვლა */
+  refreshToken(): Observable<string> {
+    const token = localStorage.getItem('token');
+    if (!token) return throwError(() => 'No token found');
+
+    return this.http.post(`${this.API}/refresh`, { token }).pipe(
+      map((res: any) => {
+        if (res?.access_token) {
+          localStorage.setItem('user', JSON.stringify(res));
+          localStorage.setItem('token', res.access_token);
+          this.userSubject.next(res);
+          console.log('🔄 ტოკენი განახლდა:', res.access_token);
+          return res.access_token;
+        }
+        throw new Error('Invalid refresh response');
+      }),
+      catchError(err => {
+        console.error('❌ Refresh token შეცდომა:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
   logout() {
-    localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     this.userSubject.next(null);
+    console.log('👋 გამოსვლა შესრულდა.');
   }
 
-  /** 🔹 შესულია თუ არა */
+
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  /** 🔹 მომხმარებლის შენახვა */
+
   saveUser(user: any) {
     localStorage.setItem('user', JSON.stringify(user));
     this.userSubject.next(user);
   }
 
-  /** 🔹 მომხმარებლის წამოღება */
   getUser(): any {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;

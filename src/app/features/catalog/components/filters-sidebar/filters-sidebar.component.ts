@@ -10,11 +10,11 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./filters-sidebar.component.scss']
 })
 export class FiltersSidebarComponent {
-  // === 🟢 ესენი საჭიროა ერორების ასარიდებლად ===
+
   @Input() categories: string[] = [];
   @Input() brands: string[] = [];
 
-  // === 🟢 ფილტრის პარამეტრები ===
+
   q: string = '';
   category: string = '';
   brand: string = '';
@@ -22,7 +22,6 @@ export class FiltersSidebarComponent {
   maxPrice?: number;
   minRating?: number;
 
-  // === 🟢 როცა ფილტრი იცვლება ===
   @Output() changeFilters = new EventEmitter<any>();
 
   apply() {

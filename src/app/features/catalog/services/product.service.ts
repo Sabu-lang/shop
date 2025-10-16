@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { ApiService } from 'app/core/services/api.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Product } from './product.models';
 
 export interface ProductListResponse {
@@ -24,7 +24,7 @@ export class ProductService {
   } = {}): Observable<ProductListResponse> {
     const {
       page = 1,
-      limit = 10,
+      limit = 12,
       q,
       category,
       brand,
@@ -36,22 +36,27 @@ export class ProductService {
     const params: any = {
       page_index: page,
       page_size: limit,
-      q,
-      category,
-      brand,
-      priceMin,
-      priceMax,
-      ratingMin,
     };
 
-    return this.api.get<ProductListResponse>('/shop/products/all', params);
+    if (q && q.trim()) params.q = q.trim();
+    if (category) params.category = category;
+    if (brand) params.brand = brand;
+    if (typeof priceMin === 'number') params.priceMin = priceMin;
+    if (typeof priceMax === 'number') params.priceMax = priceMax;
+    if (typeof ratingMin === 'number') params.ratingMin = ratingMin;
+
+    return this.api.get<ProductListResponse>('/shop/products/all', params).pipe(
+      map((res) => ({
+        total: res?.total ?? res?.products?.length ?? 0,
+        products: res?.products ?? []
+      }))
+    );
   }
 
   getById(id: string): Observable<Product> {
     return this.api.get<Product>(`/shop/products/id/${id}`);
   }
 
-  /** ✅ აქედან იწყება მთავარი: ID უსაფრთხოდ ამოიღოს მხოლოდ _id */
   safeGetId(p: Product): string {
     if ((p as any)?._id) return (p as any)._id;
     if ((p as any)?.id) return String((p as any).id);

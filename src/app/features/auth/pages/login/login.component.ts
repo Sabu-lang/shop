@@ -26,7 +26,6 @@ export class LoginComponent {
     this.auth.login(this.email, this.password).subscribe({
       next: (res: any) => {
         this.loading = false;
-        console.log('✅ Login response:', res);
 
         const token =
           res?.token ||
@@ -43,7 +42,6 @@ export class LoginComponent {
           res ||
           null;
 
-        // ყველა შესაძლო ვერიფიკაციის ფლაგი
         const isVerified =
           user?.isVerified ||
           user?.is_email_verified ||
@@ -51,40 +49,33 @@ export class LoginComponent {
           user?.email_verified ||
           res?.isVerified ||
           res?.verified ||
-          true; // ✅ failsafe true
+          true;
 
-        // ტოკენის შენახვა
-        if (token) {
-          localStorage.setItem('token', token);
-        }
-
-        // მომხმარებლის შენახვა
-        if (user) {
-          this.auth.saveUser(user);
-        }
+        if (token) localStorage.setItem('token', token);
+        if (user) this.auth.saveUser(user);
 
         if (!isVerified && !token) {
-          this.errorMsg =
-            'გთხოვთ გადაამოწმოთ ელ. ფოსტა — ვერიფიკაციის ბმული გამოგზავნილია.';
+          this.errorMsg = 'გთხოვთ გადაამოწმოთ ელ. ფოსტა — ვერიფიკაციის ბმული გამოგზავნილია.';
           return;
         }
 
-        // გადამისამართება მთავარ გვერდზე
         this.router.navigate(['/']);
       },
       error: (err) => {
         this.loading = false;
-        console.error('❌ Login error:', err);
-
         if (err.status === 401) {
           this.errorMsg = 'არასწორი ელ. ფოსტა ან პაროლი.';
         } else if (err.status === 400) {
-          this.errorMsg =
-            'შეყვანილი ინფორმაცია არასწორია — გადაამოწმეთ ელ.ფოსტა და პაროლი.';
+          this.errorMsg = 'შეყვანილი ინფორმაცია არასწორია — გადაამოწმეთ ელ.ფოსტა და პაროლი.';
         } else {
           this.errorMsg = 'შესვლა ვერ მოხერხდა — სცადეთ მოგვიანებით.';
         }
       }
     });
+  }
+
+  // 🧭 გადასვლა პაროლის აღდგენის გვერდზე
+  goToResetPassword() {
+    this.router.navigate(['/reset-password']);
   }
 }

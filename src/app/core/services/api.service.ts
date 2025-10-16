@@ -7,22 +7,19 @@ export class ApiService {
   private readonly BASE_URL = 'https://api.everrest.educata.dev';
   private http = inject(HttpClient);
 
-  // ✅ ტოკენის წამოღება და გაწმენდა
   private getToken(): string | null {
     const raw = localStorage.getItem('token');
     if (!raw) return null;
 
     try {
-      // ზოგი შენახულია როგორც { access_token: "..." }
       const parsed = JSON.parse(raw);
       return parsed.access_token ?? null;
     } catch {
-      // ზოგ შემთხვევაში პირდაპირ სტრინგია
       return raw;
     }
   }
 
-  // ✅ ჰედერის შექმნა ავტორიზაციით
+
   private getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
 
@@ -40,7 +37,7 @@ export class ApiService {
     return new HttpHeaders(headers);
   }
 
-  // ✅ GET
+
   get<T>(endpoint: string, params?: any): Observable<T> {
     return this.http.get<T>(`${this.BASE_URL}${endpoint}`, {
       params,
@@ -49,7 +46,7 @@ export class ApiService {
     });
   }
 
-  // ✅ POST
+
   post<T>(endpoint: string, body: any): Observable<T> {
     return this.http.post<T>(`${this.BASE_URL}${endpoint}`, body, {
       headers: this.getAuthHeaders(),
@@ -57,7 +54,6 @@ export class ApiService {
     });
   }
 
-  // ✅ PATCH
   patch<T>(endpoint: string, body: any): Observable<T> {
     return this.http.patch<T>(`${this.BASE_URL}${endpoint}`, body, {
       headers: this.getAuthHeaders(),
@@ -65,7 +61,7 @@ export class ApiService {
     });
   }
 
-  // ✅ DELETE
+
   delete<T>(endpoint: string, body?: any): Observable<T> {
     return this.http.request<T>('DELETE', `${this.BASE_URL}${endpoint}`, {
       body,

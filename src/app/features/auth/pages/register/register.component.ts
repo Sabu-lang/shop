@@ -25,7 +25,7 @@ export class RegisterComponent {
     gender: 'MALE' as 'MALE' | 'FEMALE'
   };
 
-  // 🔹 ახალი ველები template-ისთვის
+
   step: 'form' | 'verify' = 'form';
   verifyCode = '';
   loading = false;
@@ -38,12 +38,10 @@ export class RegisterComponent {
     this.errorMsg = '';
     this.successMsg = '';
 
-    // ავტომატურად დაამატე +995 თუ აკლია
+
     if (!this.form.phone.startsWith('+995')) {
       this.form.phone = `+995${this.form.phone}`;
     }
-
-    // ავტომატური avatar თუ ცარიელია
     if (!this.form.avatar) {
       this.form.avatar = 'https://i.imgur.com/BohQiHi.jpg';
     }
@@ -54,7 +52,6 @@ export class RegisterComponent {
       next: () => {
         this.loading = false;
         this.successMsg = 'ვერიფიკაციის ბმული გამოგზავნილია ელ.ფოსტაზე.';
-        // გადავდივართ ვერიფიკაციის საფეხურზე
         this.step = 'verify';
       },
       error: (err) => {
@@ -65,7 +62,7 @@ export class RegisterComponent {
     });
   }
 
-  // 🔹 ვერიფიკაციის მეთოდი (შეგიძლია მერე API დაუკავშირო)
+
   verify() {
     if (!this.verifyCode.trim()) {
       this.errorMsg = 'გთხოვთ შეიყვანოთ ვერიფიკაციის კოდი.';
@@ -80,7 +77,7 @@ export class RegisterComponent {
     }, 1500);
   }
 
-  // 🔹 დაბრუნება ფორმაზე
+
   backToForm() {
     this.step = 'form';
   }

@@ -1,15 +1,17 @@
 .login-container {
   max-width: 380px;
   margin: 100px auto;
-  background: white;
+  background: var(--card);
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
   text-align: center;
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
 
   h2 {
     margin-bottom: 1.5rem;
-    color: #111;
+    color: var(--text);
   }
 
   form {
@@ -20,20 +22,22 @@
     input {
       padding: 0.7rem;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--card-border);
       font-size: 0.95rem;
       outline: none;
-      transition: 0.2s;
+      background: var(--bg);
+      color: var(--text);
+      transition: 0.3s;
 
       &:focus {
-        border-color: #00b4ff;
+        border-color: var(--primary);
       }
     }
 
     button {
       margin-top: 0.5rem;
-      padding: 0.8rem;
-      background: #00b4ff;
+      padding: 0.9rem;
+      background: var(--primary);
       border: none;
       border-radius: 10px;
       color: white;
@@ -42,12 +46,28 @@
       transition: 0.3s ease;
 
       &:hover {
-        background: #009be0;
+        background: var(--primary-dark);
       }
 
       &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
+      }
+    }
+
+    /* 🧩 Forgot Password Button */
+    .forgot-btn {
+      margin-top: 20px; /* 👈 აქ დავამატე უფრო ქვემოთ ჩამოსაწევად */
+      background: transparent;
+      color: var(--primary);
+      border: none;
+      text-decoration: underline;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+
+      &:hover {
+        color: var(--primary-dark);
       }
     }
   }
@@ -58,18 +78,39 @@
   }
 
   .switch {
-    margin-top: 15px;
+    margin-top: 25px; /* 👈 ოდნავ მეტ ზღვარი ქვემოთ */
     font-size: 0.9rem;
-    color: #333;
+    color: var(--text);
 
     a {
-      color: #00b4ff;
+      color: var(--primary);
       font-weight: bold;
       text-decoration: none;
 
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+}
+
+/* 🌙 DARK MODE FIX */
+body.dark-theme .login-container {
+  background: #1f1f1f;
+  color: #eaeaea;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+
+  input {
+    background: #2a2a2a;
+    border-color: #333;
+    color: #fff;
+  }
+
+  .forgot-btn {
+    color: #4da3ff;
+
+    &:hover {
+      color: #80c1ff;
     }
   }
 }

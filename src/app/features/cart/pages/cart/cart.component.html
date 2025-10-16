@@ -1,31 +1,49 @@
-<div class="cart-container" *ngIf="!loading; else loadingTpl">
-  <h2>🛒 შენი კალათა</h2>
+<div class="cart-page">
+  <h2>🛒 ჩემი კალათა</h2>
 
-  <div *ngIf="items.length === 0" class="empty">
-    კალათა ცარიელია 😢
+  <!-- ცარიელი კალათა -->
+  <div *ngIf="!items.length && !loading" class="empty-cart">
+    <div class="icon">😢</div>
+    <p>თქვენი კალათა ცარიელია.</p>
   </div>
 
-  <div *ngFor="let item of items" class="cart-item">
-    <div class="info">
-      <h3>{{ item.title }}</h3>
-      <p>ფასი: {{ item.price }} ₾</p>
-      <p>რაოდენობა: {{ item.quantity }}</p>
-      <p>ჯამი: {{ item.subtotal }} ₾</p>
-    </div>
+  <!-- ჩატვირთვის ინდიკატორი -->
+  <div *ngIf="loading" class="loading">
+    იტვირთება კალათა...
+  </div>
 
-    <div class="actions">
-      <button (click)="decrease(item)">➖</button>
-      <button (click)="increase(item)">➕</button>
-      <button (click)="remove(item)">🗑 წაშლა</button>
+  <!-- პროდუქტის სია -->
+  <div class="cart-items" *ngIf="items.length">
+    <div class="cart-item" *ngFor="let item of items">
+      <div class="cart-info">
+        <img [src]="item.image" [alt]="item.title" />
+        <div class="details">
+          <h3>{{ item.title }}</h3>
+          <p class="price">
+            ფასი:
+            <strong>{{ item.price | currency: "₾" }}</strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="quantity">
+        <button (click)="decrease(item)">−</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increase(item)">+</button>
+      </div>
+
+      <div class="subtotal">
+        <strong>{{ item.subtotal | currency: "₾" }}</strong>
+        <button class="remove" (click)="remove(item)">წაშლა</button>
+      </div>
     </div>
   </div>
 
-  <div class="summary" *ngIf="items.length > 0">
-    <h3>სულ თანხა: {{ totalPrice }} ₾</h3>
-    <p>სულ რაოდენობა: {{ totalQuantity }}</p>
+  <!-- ჯამი და გადახდა -->
+  <div class="summary" *ngIf="items.length">
+    <p><strong>სულ რაოდენობა:</strong> {{ totalQuantity }}</p>
+    <p><strong>ჯამური ფასი:</strong> {{ totalPrice | currency: "₾" }}</p>
+
+    <button class="checkout" (click)="goToPayment()">💳 გადახდა</button>
   </div>
 </div>
-
-<ng-template #loadingTpl>
-  <p>იტვირთება...</p>
-</ng-template>

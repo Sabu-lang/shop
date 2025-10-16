@@ -1,43 +1,122 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service'; // ✅ IMPORT FIXED
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { ThemeService } from 'app/core/services/theme.service';
+import { debounceTime, distinctUntilChanged, map, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
-  q: string = '';
-  user: any = null;
+export class HeaderComponent implements OnInit, OnDestroy {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private auth = inject(AuthService);
+  private themeService = inject(ThemeService);
 
-  constructor(private router: Router, private auth: AuthService) {}
+  user: any = null;
+  private sub = new Subscription();
+  theme: 'light' | 'dark' = 'light';
+  menuOpen = false;
+
+  form = this.fb.group({
+    q: [''],
+    category: [''],
+    brand: [''],
+    priceMin: [''],
+    priceMax: [''],
+  });
 
   ngOnInit() {
     this.user = this.auth.getUser();
+    this.theme = this.themeService.currentTheme;
 
-    this.auth.user$.subscribe((u: any) => {
-      this.user = u;
-      console.log('🔄 Header განახლდა:', u);
-    });
+    this.sub.add(this.auth.user$.subscribe((u: any) => (this.user = u)));
+
+    this.sub.add(
+      this.route.queryParamMap
+        .pipe(
+          map((p) => ({
+            q: p.get('q') ?? '',
+            category: p.get('category') ?? '',
+            brand: p.get('brand') ?? '',
+            priceMin: p.get('priceMin') ?? '',
+            priceMax: p.get('priceMax') ?? '',
+          }))
+        )
+        .subscribe((vals) => this.form.patchValue(vals, { emitEvent: false }))
+    );
+
+    this.sub.add(
+      this.form.valueChanges
+        .pipe(
+          debounceTime(400),
+          map((v) => JSON.stringify(v)),
+          distinctUntilChanged(),
+          map((s) => JSON.parse(s))
+        )
+        .subscribe((vals) => this.navigateWithFilters(vals))
+    );
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   onSearch() {
-    const query = this.q.trim();
-    if (query.length > 0) {
-      this.router.navigate(['/catalog'], { queryParams: { q: query } });
-    } else {
-      this.router.navigate(['/catalog']);
-    }
+    this.navigateWithFilters(this.form.getRawValue());
+    this.menuOpen = false;
   }
 
   resetFilters() {
-    this.q = '';
-    this.router.navigate(['/catalog'], { queryParams: {} });
+    this.form.reset({
+      q: '',
+      category: '',
+      brand: '',
+      priceMin: '',
+      priceMax: '',
+    });
+    this.navigateWithFilters({});
+    this.menuOpen = false;
+  }
+
+  private navigateWithFilters(raw: any) {
+    const qp: any = {};
+    const cleaned = {
+      q: (raw.q || '').trim(),
+      category: raw.category || '',
+      brand: raw.brand || '',
+      priceMin: raw.priceMin || '',
+      priceMax: raw.priceMax || '',
+    };
+
+    Object.entries(cleaned).forEach(([k, v]) => {
+      if (v !== '' && v !== null && v !== undefined) {
+        qp[k] = v;
+      }
+    });
+
+    qp['page'] = 1;
+
+    this.router.navigate(['/catalog'], {
+      queryParams: qp,
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
+    this.theme = this.themeService.currentTheme;
   }
 
   goHome() {
@@ -45,9 +124,8 @@ export class HeaderComponent implements OnInit {
   }
 
   goAccount() {
-    if (this.user) {
-      this.router.navigate(['/account']);
-    } else {
+    if (this.user) this.router.navigate(['/account']);
+    else {
       alert('გთხოვთ გაიაროთ ავტორიზაცია.');
       this.router.navigate(['/login']);
     }

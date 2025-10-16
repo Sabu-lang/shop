@@ -1,39 +1,105 @@
 <header class="header">
-  <!-- ლოგო -->
   <div class="logo" (click)="goHome()">
-    <!-- <img src="assets/images/logo.png" alt="logo" /> -->
-    <span>🛍️MyShop</span>
+    <span>🛍️ MyShop</span>
   </div>
 
-  <!-- ძებნა -->
-  <div class="search">
+  <form class="search desktop" [formGroup]="form" (ngSubmit)="onSearch()">
     <input
       type="text"
+      formControlName="q"
       placeholder="ძებნა..."
-      [(ngModel)]="q"
-      (keyup.enter)="onSearch()"
+      class="search-input"
     />
-    <button (click)="onSearch()">ძებნა</button>
-  </div>
 
-  <!-- მოქმედებები -->
-  <div class="actions">
-    <button class="reset-btn" (click)="resetFilters()">გაფილტვრის გასუფთავება</button>
+    <select formControlName="category" class="select-box">
+      <option value="">ყველა კატეგორია</option>
+      <option value="phones">ტელეფონები</option>
+      <option value="laptops">ლეპტოპები</option>
+      <option value="tablets">პლანშეტები</option>
+      <option value="accessories">აქსესუარები</option>
+    </select>
 
-    <!-- ავტორიზებული -->
+    <select formControlName="brand" class="select-box">
+      <option value="">ყველა ბრენდი</option>
+      <option value="Apple">Apple</option>
+      <option value="Samsung">Samsung</option>
+      <option value="Lenovo">Lenovo</option>
+      <option value="Asus">Asus</option>
+    </select>
+
+    <input
+      type="number"
+      formControlName="priceMin"
+      min="0"
+      placeholder="ფასი მინ."
+      class="price-input"
+    />
+
+    <input
+      type="number"
+      formControlName="priceMax"
+      min="0"
+      placeholder="ფასი მაქს."
+      class="price-input"
+    />
+
+    <button type="submit" class="search-btn">ძებნა</button>
+    <button type="button" class="reset-btn" (click)="resetFilters()">გასუფთავება ❌</button>
+  </form>
+
+
+  <div class="actions desktop">
     <ng-container *ngIf="user; else guest">
       <button class="cart-btn" (click)="goCart()">🛒 კალათა</button>
-
-      <div class="profile">
-        <button class="profile-btn" (click)="goAccount()">👤 {{ user?.name || 'ანგარიში' }}</button>
-        <button class="logout-btn" (click)="logout()">🚪 გამოსვლა</button>
-      </div>
+      <button class="account-btn" (click)="goAccount()">👤 {{ user?.name || 'ანგარიში' }}</button>
+      <button class="logout-btn" (click)="logout()">🚪 გამოსვლა</button>
     </ng-container>
 
-    <!-- სტუმარი -->
     <ng-template #guest>
       <button class="login-btn" (click)="goLogin()">🔑 შესვლა</button>
       <button class="register-btn" (click)="goRegister()">📝 რეგისტრაცია</button>
     </ng-template>
   </div>
+
+  <div class="burger" (click)="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 </header>
+
+<nav class="mobile-menu" [class.show]="menuOpen">
+  <form [formGroup]="form" (ngSubmit)="onSearch()" class="mobile-form">
+    <input type="text" formControlName="q" placeholder="ძებნა..." />
+    <select formControlName="category">
+      <option value="">ყველა კატეგორია</option>
+      <option value="phones">ტელეფონები</option>
+      <option value="laptops">ლეპტოპები</option>
+      <option value="tablets">პლანშეტები</option>
+      <option value="accessories">აქსესუარები</option>
+    </select>
+    <select formControlName="brand">
+      <option value="">ყველა ბრენდი</option>
+      <option value="Apple">Apple</option>
+      <option value="Samsung">Samsung</option>
+      <option value="Lenovo">Lenovo</option>
+      <option value="Asus">Asus</option>
+    </select>
+    <input type="number" formControlName="priceMin" placeholder="ფასი მინ." />
+    <input type="number" formControlName="priceMax" placeholder="ფასი მაქს." />
+    <button type="submit" class="search-btn">ძებნა</button>
+    <button type="button" class="reset-btn" (click)="resetFilters()">გასუფთავება ❌</button>
+  </form>
+
+  <div class="mobile-actions">
+    <ng-container *ngIf="user; else mobileGuest">
+      <button (click)="goCart()">🛒 კალათა</button>
+      <button (click)="goAccount()">👤 ანგარიში</button>
+      <button (click)="logout()">🚪 გამოსვლა</button>
+    </ng-container>
+    <ng-template #mobileGuest>
+      <button (click)="goLogin()">🔑 შესვლა</button>
+      <button (click)="goRegister()">📝 რეგისტრაცია</button>
+    </ng-template>
+  </div>
+</nav>
